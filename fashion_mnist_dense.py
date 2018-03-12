@@ -4,6 +4,9 @@ from keras.datasets import fashion_mnist
 from keras.models import Sequential
 from keras.layers import Dense, Flatten
 from keras.optimizers import Adam
+import numpy as np
+
+import vis
 
 # Load Fashion-MNIST
 (X_train, y_train), (X_test, y_test) = fashion_mnist.load_data()
@@ -57,3 +60,10 @@ print('Test accuracy:', score[1])
 
 # ('Test loss:', 0.33005201976299287)
 # ('Test accuracy:', 0.8925)
+
+#####################################################
+# Visualizing the classification:
+y_pred = model.predict(X_test, batch_size=BATCH_SIZE)
+y_pred = np.argmax(y_pred, axis=1)
+
+vis.vis_classification(X_test, y_pred, y_test, bucket_size=10, nb_classes=10, file_name="results_dense.png")

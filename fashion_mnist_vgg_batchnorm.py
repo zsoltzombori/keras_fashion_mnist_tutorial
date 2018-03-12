@@ -8,6 +8,8 @@ from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
 import numpy as np
 
+import vis
+
 # set random seed
 np.random.seed(12345)
 
@@ -133,3 +135,10 @@ print('Test accuracy:', score[1])
 
 # ('Test loss:', 0.21184167367219925)
 # ('Test accuracy:', 0.9368)
+
+#####################################################
+# Visualizing the classification:
+y_pred = model.predict(X_test, batch_size=BATCH_SIZE)
+y_pred = np.argmax(y_pred, axis=1)
+
+vis.vis_classification(X_test, y_pred, y_test, bucket_size=10, nb_classes=10, file_name="results_vgg_batchnorm.png")

@@ -96,9 +96,9 @@ print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 
 # Reduce the learning rate and continue training
-K.set_value(model.optimizer.lr, 0.0001)
+K.set_value(model.optimizer.lr, 0.00001)
 
-history2 = model.fit_generator(batches, steps_per_epoch=48000//BATCH_SIZE, epochs=20, 
+history3 = model.fit_generator(batches, steps_per_epoch=48000//BATCH_SIZE, epochs=20, 
                                validation_data=val_batches, validation_steps=12000//BATCH_SIZE)
 score = model.evaluate(X_test, y_test, verbose=0)
 print('Test loss:', score[0])

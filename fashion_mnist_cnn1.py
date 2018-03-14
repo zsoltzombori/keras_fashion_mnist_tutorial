@@ -115,6 +115,8 @@ score = model.evaluate(X_test, y_test, verbose=0)
 print('Test loss:', score[0])
 print('Test accuracy:', score[1])
 
+# ('Test loss:', 0.26054845677614213)
+# ('Test accuracy:', 0.9054)
 
 
 #####################################################

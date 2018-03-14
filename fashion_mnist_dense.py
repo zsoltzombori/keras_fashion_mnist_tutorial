@@ -18,18 +18,18 @@ X_train /= 255
 X_test /= 255
 
 # save last 20% from x_train, y_train for validation set (for model tuning)
-val_size = len(X_train) / 5
+val_size = len(X_train) // 5
 X_val = X_train[-val_size:]
 y_val = y_train[-val_size:]
 X_train = X_train[:-val_size]
 y_train = y_train[:-val_size]
 
-print "Train data shape ", X_train.shape
-print "Train label shape ", y_train.shape
-print "Validation data shape ", X_val.shape
-print "Validation label shape ", y_val.shape
-print "Test data shape ", X_test.shape
-print "Test label shape ", y_test.shape
+print("Train data shape ", X_train.shape)
+print("Train label shape ", y_train.shape)
+print("Validation data shape ", X_val.shape)
+print("Validation label shape ", y_val.shape)
+print("Test data shape ", X_test.shape)
+print("Test label shape ", y_test.shape)
 
 INPUT_SHAPE=X_train.shape[1:]
 BATCH_SIZE = 512

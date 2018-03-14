@@ -6,7 +6,10 @@ from keras.layers import Dense, Dropout, Flatten, Lambda, Input
 from keras.layers import Conv2D, MaxPooling2D, BatchNormalization
 from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
+import keras.backend as K
 import numpy as np
+
+import vis
 
 # set random seed
 np.random.seed(12345)
@@ -70,11 +73,11 @@ model.compile(loss='sparse_categorical_crossentropy',
              optimizer=Adam(lr=0.001),
              metrics=['accuracy'])
 
-model.fit(X_train, y_train,
-         batch_size=BATCH_SIZE,
-         epochs=10,
-         verbose=1,
-         validation_data=(X_val, y_val))
+history1 = model.fit(X_train, y_train,
+                     batch_size=BATCH_SIZE,
+                     epochs=10,
+                     verbose=1,
+                     validation_data=(X_val, y_val))
 
 score = model.evaluate(X_test, y_test, verbose=0)
 print('Test loss:', score[0])
@@ -84,13 +87,13 @@ print('Test accuracy:', score[1])
 # ('Test accuracy:', 0.8987)
 
 # Reduce the learning rate and continue training
-model.optimizer.lr = 0.0001
+K.set_value(model.optimizer.lr, 0.0001)
 
-model.fit(X_train, y_train,
-         batch_size=BATCH_SIZE,
-         epochs=10,
-         verbose=1,
-         validation_data=(X_val, y_val))
+history2 = model.fit(X_train, y_train,
+                     batch_size=BATCH_SIZE,
+                     epochs=50,
+                     verbose=1,
+                     validation_data=(X_val, y_val))
 
 score = model.evaluate(X_test, y_test, verbose=0)
 print('Test loss:', score[0])
@@ -99,15 +102,15 @@ print('Test accuracy:', score[1])
 # ('Test loss:', 0.24485005620718003)
 # ('Test accuracy:', 0.9151)
 
-
 # Use data augmentation and continue training
 gen = ImageDataGenerator(rotation_range=8, width_shift_range=0.08, shear_range=0.3,
                                height_shift_range=0.08, zoom_range=0.08)
 batches = gen.flow(X_train, y_train, batch_size=BATCH_SIZE)
-val_batches = gen.flow(X_val, y_val, batch_size=BATCH_SIZE)
+val_gen = ImageDataGenerator()
+val_batches = val_gen.flow(X_val, y_val, batch_size=BATCH_SIZE)
 
-model.fit_generator(batches, steps_per_epoch=48000//BATCH_SIZE, epochs=50, 
-                   validation_data=val_batches, validation_steps=12000//BATCH_SIZE)
+history3 = model.fit_generator(batches, steps_per_epoch=48000//BATCH_SIZE, epochs=50, 
+                               validation_data=val_batches, validation_steps=12000//BATCH_SIZE)
 
 score = model.evaluate(X_test, y_test, verbose=0)
 print('Test loss:', score[0])
@@ -115,3 +118,7 @@ print('Test accuracy:', score[1])
 
 #('Test loss:', 0.2488910299241543)
 #('Test accuracy:', 0.9144)
+
+#####################################################
+# visualizing the learning curves
+vis.vis_learning_curves((history1, history2, history3), "loss_cnn1.png")

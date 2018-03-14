@@ -6,6 +6,7 @@ from keras.layers import Dense, Dropout, Flatten, Lambda
 from keras.layers import Conv2D, MaxPooling2D, BatchNormalization
 from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
+import keras.backend as K
 import numpy as np
 
 import vis
@@ -105,7 +106,7 @@ print('Test accuracy:', score[1])
 # ('Test accuracy:', 0.9077)
 
 # Reduce the learning rate and continue training
-model.optimizer.lr = 0.0001
+K.set_value(model.optimizer.lr, 0.0001)
 
 model.fit(X_train, y_train,
          batch_size=BATCH_SIZE,

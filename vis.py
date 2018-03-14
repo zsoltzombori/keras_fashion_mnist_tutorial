@@ -1,3 +1,6 @@
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 import numpy as np
 import scipy.misc
 from collections import defaultdict
@@ -23,3 +26,35 @@ def vis_classification(X, y_true, y_pred, bucket_size=10, nb_classes=10, image_s
     vis_image[::image_size * bucket_size, :] = 0
     vis_image[:, ::image_size * bucket_size] = 0
     scipy.misc.imsave(file_name, vis_image)
+
+def vis_learning_curves(histories, fileName):
+    acc_list=[]
+    val_acc_list=[]
+    loss_list=[]
+    val_loss_list=[]
+    for history in histories:
+        acc_list.append(history.history['acc'])
+        val_acc_list.append(history.history['val_acc'])
+        loss_list.append(history.history['loss'])
+        val_loss_list.append(history.history['val_loss'])
+    acc_list = np.concatenate(acc_list)
+    val_acc_list = np.concatenate(val_acc_list)
+    loss_list = np.concatenate(loss_list)
+    val_loss_list = np.concatenate(val_loss_list)
+    NB_EPOCHS = len(acc_list)
+
+    plt.figure(1)
+    plt.subplot(211)
+    plt.plot(range(1, NB_EPOCHS+1), loss_list, 'r--', label="train")
+    plt.plot(range(1, NB_EPOCHS+1), val_loss_list, 'b--', label="validation")
+    plt.ylabel("loss")
+    legend = plt.legend(loc='upper right', shadow=True, fontsize='x-large')
+
+    plt.subplot(212)
+    plt.plot(range(1, NB_EPOCHS+1), acc_list, 'r--', label="train")
+    plt.plot(range(1, NB_EPOCHS+1), val_acc_list, 'b--', label="validation")
+    plt.ylabel("accuracy")
+    plt.xlabel("epochs")
+    legend = plt.legend(loc='lower right', shadow=True, fontsize='x-large')
+
+    plt.savefig(fileName)

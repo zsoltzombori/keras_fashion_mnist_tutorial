@@ -33,6 +33,7 @@ print "Test label shape ", y_test.shape
 
 INPUT_SHAPE=X_train.shape[1:]
 BATCH_SIZE = 512
+NB_EPOCHS = 20
 
 # Two layer dense network
 model = Sequential([
@@ -48,9 +49,10 @@ model.compile(optimizer=Adam(lr=0.001),
                loss='sparse_categorical_crossentropy',
                metrics=['accuracy'])
 
+
 history = model.fit(X_train, y_train,
                      batch_size=BATCH_SIZE,
-                     epochs=20,
+                     epochs=NB_EPOCHS,
                      verbose=1,
                      validation_data=(X_val, y_val))
 
@@ -60,6 +62,11 @@ print('Test accuracy:', score[1])
 
 # ('Test loss:', 0.33005201976299287)
 # ('Test accuracy:', 0.8925)
+
+#####################################################
+# visualizing the learning curves
+vis.vis_learning_curves((history,), "loss_dense.png")
+
 
 #####################################################
 # Visualizing the classification:

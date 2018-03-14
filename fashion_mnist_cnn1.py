@@ -1,8 +1,8 @@
 # importing required libraries
 import keras
 from keras.datasets import fashion_mnist
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten, Lambda
+from keras.models import Sequential, Model
+from keras.layers import Dense, Dropout, Flatten, Lambda, Input
 from keras.layers import Conv2D, MaxPooling2D, BatchNormalization
 from keras.optimizers import Adam
 from keras.preprocessing.image import ImageDataGenerator
@@ -43,14 +43,26 @@ INPUT_SHAPE=X_train.shape[1:]
 BATCH_SIZE = 512
 
 # CNN with 1 Convolutional Layer
-model = Sequential([
-    Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=INPUT_SHAPE),
-    MaxPooling2D(pool_size=(2, 2)),
-    Dropout(0.2),
-    Flatten(),
-    Dense(128, activation='relu'),
-    Dense(10, activation='softmax')
-])
+SEQUENTIAL=False
+if SEQUENTIAL:
+    model = Sequential([
+        Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=INPUT_SHAPE),
+        MaxPooling2D(pool_size=(2, 2)),
+        Dropout(0.2),
+        Flatten(),
+        Dense(128, activation='relu'),
+        Dense(10, activation='softmax')
+    ])
+else: # alternative creation of the model using the functional api
+    inputs = Input(shape=INPUT_SHAPE)
+    output = Conv2D(32, kernel_size=(3, 3), activation='relu') (inputs)
+    output = MaxPooling2D(pool_size=(2, 2)) (output)
+    output = Dropout(0.2) (output)
+    output = Flatten() (output)
+    output = Dense(128, activation='relu') (output)
+    output = Dense(10, activation='softmax') (output)
+    model = Model(inputs, output)
+
 
 model.summary()
 

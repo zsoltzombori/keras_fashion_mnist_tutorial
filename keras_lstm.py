@@ -65,8 +65,8 @@ def load_data():
     reversed_dictionary = dict(zip(word_to_id.values(), word_to_id.keys()))
 
     print(train_data[:5])
-    print(word_to_id)
-    print(vocabulary[:10])
+    # print(word_to_id)
+    print(vocabulary)
     print(" ".join([reversed_dictionary[x] for x in train_data[:10]]))
     return train_data, valid_data, test_data, vocabulary, reversed_dictionary
 
@@ -126,7 +126,7 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['categ
 
 print(model.summary())
 checkpointer = ModelCheckpoint(filepath=data_path + '/model-{epoch:02d}.hdf5', verbose=1)
-num_epochs = 50
+num_epochs = 20
 if args.run_opt == 1:
     model.fit_generator(train_data_generator.generate(), len(train_data)//(batch_size*num_steps), num_epochs,
                         validation_data=valid_data_generator.generate(),
@@ -136,7 +136,7 @@ if args.run_opt == 1:
     #                     validation_steps=10)
     model.save(data_path + "final_model.hdf5")
 elif args.run_opt == 2:
-    model = load_model(data_path + "\model-40.hdf5")
+    model = load_model(data_path + "/model-{:02d}.hdf5".format(num_epochs))
     dummy_iters = 40
     example_training_generator = KerasBatchGenerator(train_data, num_steps, 1, vocabulary,
                                                      skip_step=1)

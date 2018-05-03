@@ -53,11 +53,11 @@ output = Conv2D(32, kernel_size=(3, 3), padding="same") (inputs)
 
 # add first residual block with two convolutional layers
 res = output
-res = BatchNormalization()(res)
 res = Activation("relu")(res)
+res = BatchNormalization()(res)
 res = Conv2D(32, kernel_size=(3, 3), padding="same") (res)
-res = BatchNormalization()(res)
 res = Activation("relu")(res)
+res = BatchNormalization()(res)
 res = Conv2D(32, kernel_size=(3, 3), padding="same") (res)
 output = Add()([res, output])
  
@@ -66,11 +66,11 @@ output = MaxPooling2D(pool_size=(2, 2)) (output)
 
 # add second residual block with two convolutional layers
 res = output
-res = BatchNormalization()(res)
 res = Activation("relu")(res)
+res = BatchNormalization()(res)
 res = Conv2D(32, kernel_size=(3, 3), padding="same") (res)
-res = BatchNormalization()(res)
 res = Activation("relu")(res)
+res = BatchNormalization()(res)
 res = Conv2D(32, kernel_size=(3, 3), padding="same") (res)
 output = Add()([res, output])
 
@@ -79,17 +79,17 @@ output = MaxPooling2D(pool_size=(2, 2)) (output)
 
 # add third residual block with two convolutional layers
 res = output
-res = BatchNormalization()(res)
 res = Activation("relu")(res)
+res = BatchNormalization()(res)
 res = Conv2D(32, kernel_size=(3, 3), padding="same") (res)
-res = BatchNormalization()(res)
 res = Activation("relu")(res)
+res = BatchNormalization()(res)
 res = Conv2D(32, kernel_size=(3, 3), padding="same") (res)
 output = Add()([res, output])
 
 # add two tense layers to the end
-output = BatchNormalization()(output)
 output = Activation("relu")(output)
+output = BatchNormalization()(output)
 output = Dropout(0.5) (output)
 output = Flatten() (output)
 output = Dense(128, activation='relu') (output)

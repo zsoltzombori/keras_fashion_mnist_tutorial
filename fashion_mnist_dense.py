@@ -33,19 +33,20 @@ print("Test label shape ", y_test.shape)
 
 INPUT_SHAPE=X_train.shape[1:]
 BATCH_SIZE = 512
-NB_EPOCHS = 20
+LEARNING_RATE = 0.001
+NB_EPOCHS = 30
 
 # Two layer dense network
 model = Sequential([
     Flatten(input_shape=INPUT_SHAPE),
     Dense(512, activation='relu'),
-    Dense(128, activation = 'relu'),
+    Dense(512, activation='relu'),
     Dense(10, activation='softmax')
 ])
 
 model.summary()
 
-model.compile(optimizer=Adam(lr=0.001),
+model.compile(optimizer=Adam(lr=LEARNING_RATE),
                loss='sparse_categorical_crossentropy',
                metrics=['accuracy'])
 
